@@ -1,28 +1,55 @@
+clear;
+
 %Load image
-im = imread('test.jpg','jpg');
-im = rgb2gray(im);
-[rows, cols] = size(im);
+img_in = imread('test.jpg','jpg');
+img_in = rgb2gray(img_in);
+[rows, cols] = size(img_in);
 figure(1)
-imshow(im)
+imshow(img_in)
 truesize;
 title('Original Image')
 
-%Decimate Image (nearest neighbor)
-decimated_im = im;
-decimated_im = subsampleByDecimation(decimated_im,4);
+%Subsample by Nearest Neighbor
+%Create an output canvas
+img_out_nn = zeros(rows, (num_imgs+1) * cols);
+for i = 0:num_imgs
+    temp = imresize(img_in, .5^i, 'nearest');
+    left_bound = i*cols + 1;
+    right_bound = (i+1)*cols;
+    img_out_nn(:,left_bound:right_bound) = imresize(temp, 2^i, 'nearest');
+end
+img_out_nn = mat2gray(img_out_nn);
 figure(2)
-imshow(decimated_im)
+imshow(img_out_nn)
 truesize;
-title('Decimated Image')
+title('Resized by Nearest Neighbor');
 
-break
-%Average Pixels
-averaged_im = im;
-averaged_im(every_other_row+1,:)=uint8((double(im(every_other_row,:))+double(im(every_other_row+1,:)))/2);
-averaged_im(every_other_row,:)=uint8((double(im(every_other_row,:))+double(im(every_other_row+1,:)))/2);
-averaged_im(:,every_other_col+1)=uint8((double(im(:,every_other_col))+double(im(:,every_other_col+1)))/2);
-averaged_im(:,every_other_col)=uint8((double(im(:,every_other_col))+double(im(:,every_other_col+1)))/2);
+%Subsample Bileaner
+%Create an output canvas
+img_out_bl = zeros(rows, (num_imgs+1) * cols);
+for i = 0:num_imgs
+    temp = imresize(img_in, .5^i, 'bilinear');
+    left_bound = i*cols + 1;
+    right_bound = (i+1)*cols;
+    img_out_bl(:,left_bound:right_bound) = imresize(temp, 2^i, 'bilinear');
+end
+img_out_bl = mat2gray(img_out_bl);
 figure(3)
-imshow(averaged_im)
+imshow(img_out_bl)
 truesize;
-title('Averaged Image')
+title('Resized by Bilinear Method');
+
+%Subsample Bicubic
+%Create an output canvas
+img_out_bc = zeros(rows, (num_imgs+1) * cols);
+for i = 0:num_imgs
+    temp = imresize(img_in, .5^i, 'bicubic');
+    left_bound = i*cols + 1;
+    right_bound = (i+1)*cols;
+    img_out_bc(:,left_bound:right_bound) = imresize(temp, 2^i, 'bicubic');
+end
+img_out_bc = mat2gray(img_out_bc);
+figure(4)
+imshow(img_out_bc)
+truesize;
+title('Resized by Bicubic Method');

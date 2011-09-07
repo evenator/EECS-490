@@ -7,7 +7,7 @@ imshow(im)
 truesize;
 title('Original Image')
 
-%Decimate Image
+%Decimate Image (nearest neighbor)
 decimated_im = im;
 decimated_im = subsampleByDecimation(decimated_im,4);
 figure(2)

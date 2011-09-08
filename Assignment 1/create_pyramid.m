@@ -26,4 +26,6 @@ end
 pyramid=mat2gray(pyramid);
 figure(2);
 imshow(pyramid);
+truesize;
 title('Image pyramid');
+imwrite(pyramid,'img_pyramid.png','png');

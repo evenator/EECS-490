@@ -20,6 +20,7 @@ figure(2)
 imshow(img_out_nn)
 truesize;
 title('Resized by Nearest Neighbor');
+imwrite(img_out_nn,'img_out_nn.png','png');
 
 %Subsample Bileaner
 %Create an output canvas
@@ -35,6 +36,7 @@ figure(3)
 imshow(img_out_bl)
 truesize;
 title('Resized by Bilinear Method');
+imwrite(img_out_bl,'img_out_bl.png','png');
 
 %Subsample Bicubic
 %Create an output canvas
@@ -50,3 +52,4 @@ figure(4)
 imshow(img_out_bc)
 truesize;
 title('Resized by Bicubic Method');
+imwrite(img_out_bc,'img_out_bc.png','png');

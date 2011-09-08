@@ -18,3 +18,4 @@ figure(2)
 imshow(img_out)
 truesize;
 title('Progressively Decreasing Grayscale');
+imwrite(img_out,'img_out_grays.png','png');

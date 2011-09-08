@@ -1,13 +1,10 @@
 clear;
 
 %Load image
-img_in = imread('test.jpg','jpg');
-img_in = rgb2gray(img_in);
-[rows, cols] = size(img_in);
-figure(1)
-imshow(img_in)
-truesize;
-title('Original Image')
+load_image
+
+%Number of resized images to create
+num_imgs = 5;
 
 %Subsample by Nearest Neighbor
 %Create an output canvas

@@ -12,13 +12,24 @@ function processed_image = process_image(template_name, image_name)
     image(comparison_image);
     title('Comparison Image');
     
+    %Select Registration Points
+    [template_points, image_points] = cpselect(comparison_image, template_image,'Wait',true);
+    
+    m_warp = [template_points';1,1,1,1]\[image_points';1,1,1,1]
+    comparison_image = rgb2gray(comparison_image);
+    warped_image = uint8(m_warp*double(comparison_image));
+    figure(3)
+    image(warped_image);
+    title('Warped Image');
+    
+    return;
     %Load registration points
     reg_points = (xlsread(['point_data/',template_name,'.xls']))';
-    for(reg_point = reg_points)
+    for(i = [1:4])
         %Mark a registration point in the template image
         prompt_image = template_image;
-        prompt_image(reg_point)
-        prompt_image(reg_point)=[255,0,0];
+        reg_point = reg_points(:,i);
+        prompt_image(reg_point,:)% = [255,0,0];
         figure(1)
         image(prompt_image);
         title('Click the corresponding point in the other image');

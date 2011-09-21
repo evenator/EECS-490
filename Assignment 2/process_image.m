@@ -22,7 +22,7 @@ function processed_image = process_image(template_name, image_name)
     transform = cp2tform(template_points, image_points,'affine');
     
     %Transform Image
-    transformed_image = imtransform(input_image, transform, 'bilinear','Size',template_size);
+    transformed_image = imtransform(input_image, transform, 'bilinear');
     figure(3)
     image(transformed_image)
     title('Transformed Image')

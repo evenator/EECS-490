@@ -5,46 +5,37 @@ function processed_image = process_image(template_name, image_name)
     figure(1)
     image(template_image);
     title('Template Image');
+    template_size = size(template_image);
     
-    %Load comparison Image
-    comparison_image = imread(['pics/',image_name,'.jpg']);
+    %Load input Image
+    input_image = imread(['pics/',image_name,'.jpg']);
     figure(2)
-    image(comparison_image);
-    title('Comparison Image');
+    image(input_image);
+    title('Input Image');
     
     %Select Registration Points
-    [template_points, image_points] = cpselect(comparison_image, template_image,'Wait',true);
+    %[template_points, image_points] = cpselect(input_image, template_image,'Wait',true);
+    %save('registration_points','template_points','image_points');
+    load('registration_points','template_points','image_points');
     
-    m_warp = [template_points';1,1,1,1]\[image_points';1,1,1,1]
-    comparison_image = rgb2gray(comparison_image);
-    warped_image = uint8(m_warp*double(comparison_image));
+    %Create transform object
+    transform = cp2tform(template_points, image_points,'affine');
+    
+    %Transform Image
+    transformed_image = imtransform(input_image, transform, 'bilinear','Size',template_size);
     figure(3)
-    image(warped_image);
-    title('Warped Image');
+    image(transformed_image)
+    title('Transformed Image')
     
-    return;
-    %Load registration points
-    reg_points = (xlsread(['point_data/',template_name,'.xls']))';
-    for(i = [1:4])
-        %Mark a registration point in the template image
-        prompt_image = template_image;
-        reg_point = reg_points(:,i);
-        prompt_image(reg_point,:)% = [255,0,0];
-        figure(1)
-        image(prompt_image);
-        title('Click the corresponding point in the other image');
-        %Prompt user to click point in comparison image
-        figure(2)
-        title('Click the corresponding point');
-        point = ginput(1)
-    end
+    %Put both images in grayscale
+    transformed_image = rgb2gray(transformed_image);
+    imshow(transformed_image);
+    template_image = rgb2gray(template_image);
+    truesize();
+    figure(1)
+    imshow(template_image);
+    truesize();
     
-    %Compute warp matrix
-
-    %Perform warp and display warped image
-
-    %Put both images in greyscale
-
     %Subtract images and display
     
 end

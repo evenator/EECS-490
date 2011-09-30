@@ -23,19 +23,29 @@ title('Imadjust with Default Parameters');
 %Run imadjust with tuned parameters
 im_out_2 = imadjust(im_in,[0;.1],[]);
 histo_2 = imhist(im_out_2);
+figure(5);
+imshow(im_out_4);
+title('Imadjust with Parameters [0;.1],[]');
+figure(6);
+plot(histo_4);
+title('Imadjust with Parameters [0;.1],[]');
 
 %Run imadjust with tuned parameters
 im_out_3 = imadjust(im_in,[0;.1],[0;.75]);
 histo_3 = imhist(im_out_3);
+figure(7);
+imshow(im_out_4);
+title('Imadjust with Parameters [0;.1],[0;.75]');
+figure(8);
+plot(histo_4);
+title('Imadjust with Parameters [0;.1],[0;.75]');
 
 %Run imadjust with tuned parameters
 im_out_4 = imadjust(im_in,[0;.25],[0;1]);
 histo_4 = imhist(im_out_4);
-
-%Display Results
-figure(3);
+figure(9);
 imshow(im_out_4);
-title('Imadjust with Tuned Parameters');
-figure(4);
+title('Imadjust with Parameters [0;.25],[0;1]');
+figure(10);
 plot(histo_4);
-title('Imadjust with Tuned Parameters');
+title('Imadjust with Parameters [0;.25],[0;1]');

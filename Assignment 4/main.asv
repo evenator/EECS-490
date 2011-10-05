@@ -1,0 +1,91 @@
+clear all;
+for(fig = 1:3)
+    figure(fig);
+    clf;
+end
+
+%Load Image
+im_name = '00106';
+im_in = imread(['images/' im_name '.tif']);
+
+% compute the height of each part (just 1/3 of total)
+height = floor(size(im_in,1)/3);
+width = size(im_in,2);
+
+% separate color channels
+im_b = im_in(1:height,:);
+im_g = im_in(height+1:height*2,:);
+im_r = im_in(height*2+1:height*3,:);
+
+%Display Separated Images
+%figure(1);
+%imshow(im_b);
+%title('Blue Channel');
+%figure(2);
+%imshow(im_g);
+%title('Green Channel');
+%figure(3);
+%imshow(im_r);
+%title('Red Channel');
+
+%Crop edges for processing to avoid distortion
+p = .1
+crop_b = proportional_crop(im_b, p);
+crop_g = proportional_crop(im_g, p);
+crop_r = proportional_crop(im_r, p);
+
+%Display Cropped Images
+%figure(1);
+%imshow(crop_b);
+%figure(2);
+%imshow(crop_g);
+%figure(3);
+%imshow(crop_r);
+
+%Perform Edge Detection
+edge_b = edge_detect(crop_b);
+edge_g = edge_detect(crop_g);
+edge_r = edge_detect(crop_r);
+
+%Display Edges
+%figure(1);
+%imshow(edge_b);
+%figure(2);
+%imshow(edge_g);
+%figure(3);
+%imshow(edge_r);
+
+%Find the Image Offsets by Correlation
+offset_g = find_offset(crop_b, crop_g)
+offset_r = find_offset(crop_b, crop_r)
+
+%Align images
+b_align = im_b;
+g_align = align(im_g, offset_g);
+r_align = align(im_r, offset(r);
+
+%Display Aligned Images
+figure(1);
+imshow(b_align);
+figure(2);
+imshow(g_align);
+figure(3);
+imshow(r_align);
+
+
+
+% Align the images
+% Functions that might be useful to you for aligning the images include:
+% "circshift", "sum", and "imresize" (for multiscale)
+
+%%%%%aG = align(G,B);
+%%%%%aR = align(R,B);
+
+% open figure
+%% figure(1);
+
+% create a color image (3D array)
+% ... use the "cat" command
+% show the resulting image
+% ... use the "imshow" command % save result image
+%% imwrite(colorim,['result-' imname]); 

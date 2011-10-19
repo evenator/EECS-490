@@ -2,7 +2,7 @@ function g = dftcorr(f, w)
 %DFTCORR 2-D correlation in the frequency domain.
 %   This function from Digital Image Processing USING MATLAB, Second Ed. by
 %   Gonzalez, Woods, and Eddins page 491.
-%   G = DFTCORR(F, W) perofmrs the correlation of a mask, W, with image F.
+%   G = DFTCORR(F, W) performs the correlation of a mask, W, with image F.
 %   The output, G, is the correlation image, of class double. The output is
 %   of the same size as F. When, as is generally true in practice, the mask
 %   image is much smaller than G, wraparound error is negligible if W is

@@ -1,0 +1,14 @@
+process_image('cantilever_layout1','cantilever1_1');
+process_image('cantilever_layout1','cantilever1_2');
+process_image('cantilever_layout2','cantilever2_1');
+process_image('cantilever_layout2','cantilever2_2');
+process_image('cantilever_layout3','cantilever3_1');
+process_image('cantilever_layout3','cantilever3_2');
+process_image('cantilever_layout4','cantilever4_1');
+process_image('cantilever_layout4','cantilever4_2');
+process_image('cantilever_layout5','cantilever5');
+process_image('cantilever_layout6_1','cantilever6');
+process_image('cantilever_layout6_2','cantilever6');
+process_image('cantilever_layout7','cantilever7');
+process_image('corona_layout_1','corona1');
+process_image('corona_layout_2','corona2');

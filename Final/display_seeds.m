@@ -1,0 +1,10 @@
+name = 'im3';
+I = imread([name '.jpg']);
+I_seeds = imread([name '_otsu_eroded.png']);
+I_gray = rgb2gray(I);
+red_layer = double(I_gray) + 100*double(I_seeds);
+green_layer = I_gray;
+blue_layer = I_gray;
+I_disp = cat(3,red_layer,green_layer,blue_layer);
+figure(5);
+imshow(I_disp);

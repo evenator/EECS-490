@@ -1,12 +1,8 @@
-name = 'im3';
-I = imread([name '.jpg']);
-figure(1);
-imshow(I);
-I_grey = rgb2gray(I);
-figure(2);
-imshow(I_grey);
-level = graythresh(I_grey)
-BW = im2bw(I,level);
-figure(3);
-imshow(BW)
-imwrite(BW,[name '_otsu.png']);
+function [ im_bw ] = otsu( im )
+%UNTITLED3 Summary of this function goes here
+%   Detailed explanation goes here
+    thresh = graythresh(im);
+    im_bw = im2bw(im,thresh);
+
+end
+

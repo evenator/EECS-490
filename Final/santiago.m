@@ -1,4 +1,6 @@
 % Face recognition by Santiago Serrano
+%http://www.pages.drexel.edu/~sis26/Eigenface%20Tutorial.htm
+
 
 clear all
 close all
@@ -63,7 +65,7 @@ figure(3);
 imshow(img);
 title('Mean Image','fontsize',18)
 
-% Change image for manipulation
+% Cast image to double for manipulation
 dbx=[];    % A matrix
 for i=1:M
     temp=double(S(:,i));

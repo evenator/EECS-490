@@ -61,7 +61,7 @@ for i = 1:length(regions)
         cap_count = cap_count + 1;
         %For each cap, reconstruct it back to its original size
         %and then add it to the cap matrix
-        region_image = bwselect(im_otsu_eroded,round(region.Centroid(1)),round(region.Centroid(2)),8);
+        region_image = bwselect(im_otsu,round(region.Centroid(1)),round(region.Centroid(2)),8);
         
         if debug
             figure(1);
@@ -70,19 +70,19 @@ for i = 1:length(regions)
             pause;
         end
         
-        dilated_region_image = dilate_im(region_image, 'disk', 30);
+        reconstructed_region_image = reconstruct_im(round(region.Centroid(1)),round(region.Centroid(2))region_image, 'disk', 30);
         
         if debug
             figure(1);
-            imshow(dilated_region_image);
-            title('Dilated Region Image');
+            imshow(reconstructed_region_image);
+            title('Reconstructed Region Image');
             pause;
         end
         
-        cap_matrix = cap_matrix + cap_count * dilated_region_image;
+        cap_matrix = cap_matrix + cap_count * reconstructed_region_image;
         %Dilate further with a small element and mask it out of 
         %the masked image
-        region_mask = dilate_im(dilated_region_image, 'disk', 5);
+        region_mask = dilate_im(reconstructed_region_image, 'disk', 5);
         %Invert to create a mask
         region_mask = region_mask == 0;
         masked_image = region_mask .* double(masked_image);

@@ -1,3 +1,4 @@
+function [ A, eigenspace_templates, mean_img_vec ] = createeigentemplate(hsv_channel)
 % This code loosely based on Face recognition by Santiago Serrano
 % http://www.pages.drexel.edu/~sis26/Eigenface%20Tutorial.htm
 
@@ -13,7 +14,8 @@ S = zeros(img_h*img_w, M);
 figure(1);
 for i=1:M
     img_in = imread(['cap_templates/cap' int2str(i) '.jpg']);
-    img = rgb2gray(img_in);
+    img_in = rgb2hsv(img_in);
+    img = img_in(:,:,hsv_channel);
     subplot(ceil(sqrt(M)),ceil(sqrt(M)),i)
     imshow(img)
     if i==3
@@ -60,11 +62,6 @@ for i=1:M
 S(:,i) = S(:,i) - mean_img_vec;
 end
 
-dbx = S;
-icol = img_w;
-irow = img_h;
-
-
 %Covariance matrix C is way too large to deal with, but Q matrix is
 %manageable
 Q = S' * S;
@@ -97,13 +94,11 @@ for i=1:len
     ind(i)=len+1-index(i);
     vtemp(:,ind(i))=v(:,i);
 end
-d=dtemp
-v=vtemp;
 
 %End Santiago Code
 
-q_eig_vectors = v;
-eigenvalues = d;
+q_eig_vectors = vtemp;
+eigenvalues = dtemp;
 
 %Normalize eigenvectors of Q
 for i=1:size(q_eig_vectors,2)
@@ -135,3 +130,12 @@ for i=1:size(eigenvectors,2)
         title('Eigencaps','fontsize',18)
     end
 end
+
+A = eigenvectors';
+
+%Calculate the result of projecting each input into the eigenspace
+eigenspace_template = zeros(M,size(eigenvectors,2));
+for i = 1:M
+    eigenspace_templates(i,:) = A*S(:,i);
+end
+

@@ -26,11 +26,8 @@ figure(3);
 imshow(mask_image);
 
 %Mask Out the found caps
-masked_image_r = double(input_image(:,:,1))/255 .* mask_image;
-masked_image_g = double(input_image(:,:,2))/255 .* mask_image;
-masked_image_b = double(input_image(:,:,3))/255 .* mask_image;
-masked_image = cat(3, masked_image_r, masked_image_g, masked_image_b);
-figure(4);
-imshow(masked_image);
+working_image = (mask_image) .* hsv_image(:,:,3) + (mask_image==0)* .9 * graythresh(hsv_image(:,:,3));
+
+[cap_matrix_2] = findgroupedcaps(working_image);
 end
 

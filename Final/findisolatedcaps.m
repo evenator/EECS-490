@@ -1,4 +1,4 @@
-function [ cap_matrix, masked_image ] = findisolatedcaps( im )
+function [ cap_matrix, mask_image ] = findisolatedcaps( im )
 %findisolatedcaps Find the isolated Proctor and Gamble bottle caps.
 %   Finds the isolated bottle caps in the input image im. Returns
 %   an MATLAB label matrix of the bottle caps in cap_matrix and
@@ -8,18 +8,21 @@ function [ cap_matrix, masked_image ] = findisolatedcaps( im )
 global debug;
 
 %Calibration constants:
-min_capsize = 20;
-max_capsize = 2400;
+min_capsize = 500;
+max_capsize = 11000;
+erosion_size = 20;
 
-%Initialize the masked image to equal the input image
-masked_image = im;
+im_size = size(im);
+
+%Initialize the masked image to all ones
+mask_image = ones(im_size(1),im_size(2));;
 
 %Initialize the cap matrix to a matrix of zeros the same size as the input
-im_size = size(im);
 cap_matrix = zeros(im_size(1),im_size(2));
 
 %Perform otsu thresholding on the input image
 im_otsu = otsu(im);
+im_otsu = ones(im_size(1),im_size(2))-im_otsu;
 
 if debug
     figure(1);
@@ -29,7 +32,7 @@ if debug
 end
 
 %Erode the BW image with a large element to sever "bridges"
-im_otsu_eroded = erode_im(im_otsu, 'disk', 30);
+im_otsu_eroded = erode_im(im_otsu, 'disk', erosion_size);
 
 if debug
     figure(1);
@@ -59,9 +62,9 @@ for i = 1:length(regions)
     %Regions in a certain size range are caps
     if region.Area > min_capsize && region.Area < max_capsize
         cap_count = cap_count + 1;
-        %For each cap, reconstruct it back to its original size
+        %For each cap, dilate it back to its original size
         %and then add it to the cap matrix
-        region_image = bwselect(im_otsu,round(region.Centroid(1)),round(region.Centroid(2)),8);
+        region_image = bwselect(im_otsu_eroded,round(region.Centroid(1)),round(region.Centroid(2)),8);
         
         if debug
             figure(1);
@@ -70,21 +73,21 @@ for i = 1:length(regions)
             pause;
         end
         
-        reconstructed_region_image = reconstruct_im(round(region.Centroid(1)),round(region.Centroid(2))region_image, 'disk', 30);
+        dilated_region_image = dilate_im(region_image, 'disk', erosion_size);
         
         if debug
             figure(1);
-            imshow(reconstructed_region_image);
-            title('Reconstructed Region Image');
+            imshow(dilated_region_image);
+            title('Dilated Region Image');
             pause;
         end
         
-        cap_matrix = cap_matrix + cap_count * reconstructed_region_image;
+        cap_matrix = cap_matrix + cap_count * dilated_region_image;
         %Dilate further with a small element and mask it out of 
         %the masked image
-        region_mask = dilate_im(reconstructed_region_image, 'disk', 5);
-        %Invert to create a mask
+        region_mask = dilate_im(dilated_region_image, 'disk', 5);
+        %Mask and invert (mask with white)
         region_mask = region_mask == 0;
-        masked_image = region_mask .* double(masked_image);
+        mask_image = mask_image .* double(region_mask);
     end
 end

@@ -16,6 +16,9 @@ im_r = im_in(height*2+1:height*3,:);
 %Create Output Images
 %im_color = create_composite(im_r, im_g, im_b);
 %im_color_corr = create_composite_corr(im_r, im_g, im_b);
+%figure(1)
 im_color_crop = create_composite_crop(im_r, im_g, im_b);
+%figure(2)
 %im_color_edge = create_composite_edge(im_r, im_g, im_b);
 toc()
+%imwrite(im_color_crop,['images/',im_name,'_output','.png']);

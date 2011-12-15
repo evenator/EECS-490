@@ -7,6 +7,18 @@ function [ im_out ] = create_composite_crop( im_r, im_g, im_b )
     crop_b = proportional_crop(im_b, p);
     crop_g = proportional_crop(im_g, p);
     crop_r = proportional_crop(im_r, p);
+%     figure(1)
+%     imshow(im_r)
+%     figure(2)
+%     imshow(crop_r)
+%     figure(3)
+%     imshow(im_g)
+%     figure(4)
+%     imshow(crop_g)
+%     figure(5)
+%     imshow(im_b);
+%     figure(6)
+%     imshow(crop_b)
 
     %Find the Image Offsets by Correlation
     offset_g = find_offset(crop_b, crop_g);
